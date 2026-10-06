@@ -63,6 +63,11 @@ orchestrator's ivory-theme render (`orchestrator/tools/case-study/rancho-bernard
 which uses this site's palette, fonts and wordmark. The MP4 is the 1920×1080 H.264 `web.mp4`
 from that render. The poster is the 4K `poster.jpg` scaled to 1920 px.
 
+The risk map (`src/components/RiskMap.tsx`) draws `src/data/rancho-bernardo-risk.json`, written by
+`orchestrator/tools/risk/web_map.py` from the fire ensemble in `tools/risk/ensemble.py`. The JSON loads
+as its own chunk. `public/media/rancho-bernardo-risk-map.jpg` is a static capture of the map, used on the
+home-page teaser.
+
 To add another page, create `<path>/index.html`, register it in `pages` in `vite.config.ts`
 (and in `socialImages` if it has its own share image), then add a mount file in `src/`.
 

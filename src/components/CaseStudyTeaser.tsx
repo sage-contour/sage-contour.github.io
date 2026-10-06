@@ -23,10 +23,10 @@ export function CaseStudyTeaser() {
         right={
           <a href={href} className="reveal reveal-delay-1 group block overflow-hidden rounded-2xl border border-line bg-bg" tabIndex={-1} aria-hidden="true">
             <img
-              src={`${BASE}media/rancho-bernardo-poster.jpg`}
+              src={`${BASE}media/rancho-bernardo-risk-map.jpg`}
               alt=""
-              width={1920}
-              height={1080}
+              width={1600}
+              height={1138}
               loading="lazy"
               decoding="async"
               className="block h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none"

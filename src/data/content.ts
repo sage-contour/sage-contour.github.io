@@ -200,19 +200,19 @@ export const closing = {
 export const caseStudy = {
   teaser: {
     eyebrow: 'Case study',
-    heading: 'One neighborhood, simulated end to end',
-    copy: 'We ran the Sage pipeline on The Trails in Rancho Bernardo, San Diego: public data in, 3D geometry, a CFD wind field, and an illustrative fire scenario out.',
+    heading: 'One neighborhood, mapped home by home',
+    copy: 'We ran the Sage pipeline on The Trails in Rancho Bernardo, San Diego: public data in; 3D geometry, a CFD wind field, and a home-by-home risk map from 816 fire simulations out.',
     cta: 'Read the case study',
   },
   meta: {
     title: 'Rancho Bernardo case study | Sage',
     description:
-      'How Sage modeled wind across The Trails in Rancho Bernardo, San Diego: lidar geometry for 221 buildings and 2,871 trees, a CFD wind field, and an illustrative fire scenario.',
+      'How Sage mapped wildfire risk home by home across The Trails in Rancho Bernardo, San Diego: lidar geometry, a CFD wind field, and 816 fire simulations.',
   },
   eyebrow: 'Case study · San Diego County, California',
-  heading: 'Rancho Bernardo: how wind moves through one neighborhood',
+  heading: 'Rancho Bernardo: mapping wildfire risk home by home',
   intro:
-    'The Trails sits where homes meet open chaparral. We took roughly a square kilometre of it from public data to a 3D model of every building and tree, solved the wind field with CFD, and ran a separate fire scenario on top.',
+    'The Trails sits where homes meet open chaparral. We took roughly a square kilometre of it from public data to a 3D model of every building and tree, solved the wind field with CFD, and ran 816 fire simulations to map the risk to each home.',
   video: {
     label:
       'Ten-second film of The Trails, Rancho Bernardo. Wind ribbons coloured by CFD speed flow from east-northeast to west-southwest across 3D buildings and trees, then an illustrative fire spreads from the northeast edge and ignites buildings in its path.',
@@ -225,6 +225,35 @@ export const caseStudy = {
     { value: '844k', label: 'CFD mesh cells', note: 'Refined around buildings and canopy' },
     { value: '10.3 m/s', label: 'Mean local wind', note: 'Peak 20.3 m/s, from ENE' },
   ],
+  riskMap: {
+    eyebrow: 'The risk map',
+    heading: 'Same neighborhood. Different homes. Different risk.',
+    copy: 'One fire run shows one possible outcome, so we ran 816. They cover every dry, windy day in five years of local weather, with fire arriving from each of eight directions. Shading shows how often the fire reached each spot. Each home is coloured by how often it ignited.',
+    label:
+      'Risk map of The Trails, Rancho Bernardo. Burn probability is highest in the open chaparral on the east and north and falls off into the streets to the west. Of 221 homes, 35 are severe, 52 elevated, 72 moderate and 62 lower risk.',
+    layers: { burn: 'Burn probability', homes: 'Home risk' },
+    burnLegend: { title: 'Burn probability', note: 'Share of simulated fires that reach each 4 m cell' },
+    homeLegend: { title: 'Home risk tier', note: 'Share of simulated fires in which the home ignites' },
+    tiers: {
+      low: 'Lower · under 10%',
+      moderate: 'Moderate · 10–20%',
+      elevated: 'Elevated · 20–30%',
+      severe: 'Severe · 30% or more',
+    },
+    tooltip: {
+      ignites: 'Ignites in',
+      of: 'of simulated fires',
+      median: 'Typically ignites',
+      after: 'into the fire',
+      never: 'Did not ignite in any run',
+    },
+    highlights: [
+      { value: '47%', label: 'of homes fall in a different tier from their nearest neighbour, typically about 34 m away' },
+      { value: '0.1–47%', label: 'range of ignition frequency across 221 homes in one neighborhood' },
+      { value: '816', label: 'fire simulations: 51 fire-weather days × 8 directions × 2 random seeds' },
+    ],
+    note: 'Assumes a fire reaches the neighborhood under local fire weather, with every direction and weather day weighted equally. The results are uncalibrated and rank homes within this neighborhood only. They are not annual probabilities or prices.',
+  },
   steps: {
     eyebrow: 'What we ran',
     heading: 'From open data to a simulated neighborhood',
@@ -247,7 +276,11 @@ export const caseStudy = {
       },
       {
         title: 'Illustrative fire scenario',
-        body: 'A separate surface-fire model ignites at the northeast edge under the same weather and runs for 30 minutes.',
+        body: 'A separate surface-fire model ignites at the northeast edge under the same weather and runs for 30 minutes. This is the run shown in the film.',
+      },
+      {
+        title: 'Risk ensemble',
+        body: 'The same fire model, run 816 times for one simulated hour each across local fire weather and ignition directions, gives every cell a burn probability and every home an ignition frequency.',
       },
     ],
   },
@@ -274,9 +307,10 @@ export const caseStudy = {
     heading: 'What this case study does not show',
     items: [
       'The CFD solve ran 1,000 iterations but did not meet its convergence thresholds. Treat the wind field as preliminary.',
-      'The fire run is a separate surface-fire model. It is not driven by the CFD wind field.',
+      'The fire runs, including the risk ensemble, use a separate surface-fire model with uniform hourly wind. They are not driven by the CFD wind field.',
+      'The risk map weights every ignition direction and fire-weather day equally and leaves out how likely ignition is and any firefighting response. It ranks homes against each other; it is not calibrated against observed losses.',
       'Inputs come from different years: lidar 2014, building outlines 2017, imagery 2022. This is not a survey of current conditions.',
-      'Building materials and vulnerability use default assumptions. Nothing here is a property risk score, and a building that does not ignite in the scenario is not safe.',
+      'Building materials and vulnerability use default assumptions because no inspection records exist for this area. A home that rarely ignites in the simulations is not safe.',
     ],
   },
   next: {

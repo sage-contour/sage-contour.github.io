@@ -3,6 +3,7 @@ import { CASE_STUDY_PATH, caseStudy, mailto, site } from '../data/content'
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { Section, SectionHeading, Split } from '../components/Section'
+import { RiskMap } from '../components/RiskMap'
 import { Topography } from '../components/Topography'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { useReveal } from '../hooks/useReveal'
@@ -97,6 +98,25 @@ export function CaseStudyPage() {
             </dl>
           </div>
         </section>
+
+        <Section id="risk-map" tone="surface">
+          <Split
+            left={<SectionHeading eyebrow={cs.riskMap.eyebrow} title={cs.riskMap.heading} />}
+            right={<p className="reveal text-base leading-relaxed text-muted sm:text-lg lg:pt-12">{cs.riskMap.copy}</p>}
+          />
+          <div className="mt-12">
+            <RiskMap />
+          </div>
+          <dl className="reveal mt-14 grid border-t border-line md:grid-cols-3">
+            {cs.riskMap.highlights.map((h) => (
+              <div key={h.value} className="border-b border-line py-7 md:border-b-0 md:border-r md:pr-8 md:last:border-r-0 md:[&:not(:first-child)]:pl-8">
+                <dt className="font-serif text-4xl tabular-nums leading-none text-ink">{h.value}</dt>
+                <dd className="mt-3 text-base leading-relaxed text-muted">{h.label}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="reveal mt-8 max-w-3xl text-sm leading-relaxed text-faint">{cs.riskMap.note}</p>
+        </Section>
 
         <Section id="method">
           <Split
