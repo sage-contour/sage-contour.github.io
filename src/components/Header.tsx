@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 import { nav, site } from '../data/content'
 import { Wordmark } from './Wordmark'
+import { BASE, resolveHref } from '../lib/links'
 
-export function Header() {
+/** `current` is the nav href of the page being shown; omit it on the home page. */
+export function Header({ current }: { current?: string } = {}) {
+  const onHome = current === undefined
+  const link = (href: string) => resolveHref(href, onHome)
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -33,17 +37,22 @@ export function Header() {
         Skip to content
       </a>
       <div className="container-x flex h-16 items-center justify-between">
-        <a href="#top" className="rounded-md" aria-label="Sage — back to top">
+        <a href={onHome ? '#top' : BASE} className="rounded-md" aria-label={onHome ? 'Sage — back to top' : 'Sage — home'}>
           <Wordmark />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
           {nav.map((item) => (
-            <a key={item.href} href={item.href} className="text-sm text-muted transition-colors hover:text-ink">
+            <a
+              key={item.href}
+              href={link(item.href)}
+              aria-current={item.href === current ? 'page' : undefined}
+              className="text-sm text-muted transition-colors hover:text-ink aria-[current=page]:text-ink"
+            >
               {item.label}
             </a>
           ))}
-          <a href={site.primaryCtaHref} className="btn-primary">
+          <a href={link(site.primaryCtaHref)} className="btn-primary">
             {site.primaryCta}
           </a>
         </nav>
@@ -78,14 +87,15 @@ export function Header() {
           {nav.map((item) => (
             <a
               key={item.href}
-              href={item.href}
+              href={link(item.href)}
+              aria-current={item.href === current ? 'page' : undefined}
               onClick={() => setOpen(false)}
               className="border-b border-line py-3.5 font-serif text-xl text-ink last:border-b-0"
             >
               {item.label}
             </a>
           ))}
-          <a href={site.primaryCtaHref} onClick={() => setOpen(false)} className="btn-primary mt-4 w-full">
+          <a href={link(site.primaryCtaHref)} onClick={() => setOpen(false)} className="btn-primary mt-4 w-full">
             {site.primaryCta}
           </a>
         </nav>

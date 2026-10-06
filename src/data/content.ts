@@ -22,9 +22,13 @@ export const site = {
   secondaryCtaHref: '#how-it-works',
 }
 
+/** Page paths are relative to the site base (see vite.config.ts). */
+export const CASE_STUDY_PATH = 'case-studies/rancho-bernardo/'
+
 export const nav = [
   { label: 'Why Sage', href: '#why-sage' },
   { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Case Study', href: CASE_STUDY_PATH },
   { label: 'Model', href: '#model' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -185,6 +189,101 @@ export const closing = {
     success: 'Thanks — your message is on its way. We will reply by email.',
     error: 'Something went wrong sending your message. Please try again in a moment.',
   },
+}
+
+/**
+ * Rancho Bernardo case study. Figures come from the orchestrator run manifest
+ * (orchestrator/data/rancho-bernardo, docs/rancho-bernardo-example.md). Keep the
+ * limitations intact: the CFD solve did not converge and the fire run is a separate,
+ * illustrative scenario, so nothing here is a validated property risk score.
+ */
+export const caseStudy = {
+  teaser: {
+    eyebrow: 'Case study',
+    heading: 'One neighborhood, simulated end to end',
+    copy: 'We ran the Sage pipeline on The Trails in Rancho Bernardo, San Diego: public data in, 3D geometry, a CFD wind field, and an illustrative fire scenario out.',
+    cta: 'Read the case study',
+  },
+  meta: {
+    title: 'Rancho Bernardo case study | Sage',
+    description:
+      'How Sage modeled wind across The Trails in Rancho Bernardo, San Diego: lidar geometry for 221 buildings and 2,871 trees, a CFD wind field, and an illustrative fire scenario.',
+  },
+  eyebrow: 'Case study · San Diego County, California',
+  heading: 'Rancho Bernardo: how wind moves through one neighborhood',
+  intro:
+    'The Trails sits where homes meet open chaparral. We took roughly a square kilometre of it from public data to a 3D model of every building and tree, solved the wind field with CFD, and ran a separate fire scenario on top.',
+  video: {
+    label:
+      'Ten-second film of The Trails, Rancho Bernardo. Wind ribbons coloured by CFD speed flow from east-northeast to west-southwest across 3D buildings and trees, then an illustrative fire spreads from the northeast edge and ignites buildings in its path.',
+    caption:
+      'CFD wind sampled 10 m above terrain, coloured by speed. The fire is a separate illustrative scenario, shown for its first 30 simulated minutes.',
+  },
+  stats: [
+    { value: '221', label: 'Buildings modeled', note: 'Measured heights from lidar' },
+    { value: '2,871', label: 'Trees resolved', note: 'Height and crown from lidar' },
+    { value: '844k', label: 'CFD mesh cells', note: 'Refined around buildings and canopy' },
+    { value: '10.3 m/s', label: 'Mean local wind', note: 'Peak 20.3 m/s, from ENE' },
+  ],
+  steps: {
+    eyebrow: 'What we ran',
+    heading: 'From open data to a simulated neighborhood',
+    items: [
+      {
+        title: 'Property and terrain data',
+        body: 'County building outlines, 4.5 million USGS lidar points, NAIP aerial imagery and LANDFIRE fuel layers for a 1.1 × 0.8 km box.',
+      },
+      {
+        title: '3D geometry',
+        body: 'Lidar gives each building its measured height and each tree its height and crown. Terrain comes from the same survey.',
+      },
+      {
+        title: 'Weather scenario',
+        body: 'From five years of local hourly weather we chose the strongest dry, warm offshore hour: 10.4 m/s from the east-northeast, gusting to 17.7 m/s.',
+      },
+      {
+        title: 'CFD wind field',
+        body: 'OpenFOAM resolves the flow over the terrain, around 211 buildings, and through tree crowns modeled as porous zones.',
+      },
+      {
+        title: 'Illustrative fire scenario',
+        body: 'A separate surface-fire model ignites at the northeast edge under the same weather and runs for 30 minutes.',
+      },
+    ],
+  },
+  findings: {
+    eyebrow: 'What it shows',
+    heading: 'Same wind, different exposure',
+    items: [
+      {
+        title: 'Wind is not uniform',
+        body: 'Within one neighborhood, local wind at 10 m ranges from near calm in sheltered pockets to over 20 m/s in the most exposed spots. About a fifth of sampled points see less than half the reference wind speed.',
+      },
+      {
+        title: 'Terrain and structures steer it',
+        body: 'Terrain, buildings and tree canopy speed the flow up in some places and shelter it in others. A single regional wind value cannot show this.',
+      },
+      {
+        title: 'Exposure follows the flow',
+        body: 'In the scenario, 50 of 221 buildings ignite within 30 minutes. Fire enters from the wildland edge and runs downwind into the streets, and neighboring homes end up with different outcomes.',
+      },
+    ],
+  },
+  limits: {
+    eyebrow: 'Read this as a demonstration',
+    heading: 'What this case study does not show',
+    items: [
+      'The CFD solve ran 1,000 iterations but did not meet its convergence thresholds. Treat the wind field as preliminary.',
+      'The fire run is a separate surface-fire model. It is not driven by the CFD wind field.',
+      'Inputs come from different years: lidar 2014, building outlines 2017, imagery 2022. This is not a survey of current conditions.',
+      'Building materials and vulnerability use default assumptions. Nothing here is a property risk score, and a building that does not ignite in the scenario is not safe.',
+    ],
+  },
+  next: {
+    heading: 'Where this goes next',
+    copy: 'Converged, validated CFD fields coupled to ember and fire physics, run across many weather scenarios per home. That is the training data behind Sage’s fast property risk model.',
+  },
+  back: 'Back to Sage',
 }
 
 export const footer = {

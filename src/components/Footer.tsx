@@ -1,7 +1,8 @@
 import { footer, nav } from '../data/content'
 import { Wordmark } from './Wordmark'
+import { resolveHref } from '../lib/links'
 
-export function Footer() {
+export function Footer({ onHome = true }: { onHome?: boolean } = {}) {
   const year = new Date().getFullYear()
   return (
     <footer className="border-t border-line bg-bg py-12">
@@ -10,7 +11,7 @@ export function Footer() {
           <Wordmark />
           <nav aria-label="Footer" className="flex flex-wrap gap-x-7 gap-y-2">
             {nav.map((item) => (
-              <a key={item.href} href={item.href} className="text-sm text-muted hover:text-ink">
+              <a key={item.href} href={resolveHref(item.href, onHome)} className="text-sm text-muted hover:text-ink">
                 {item.label}
               </a>
             ))}

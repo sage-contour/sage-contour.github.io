@@ -4,6 +4,7 @@ import { ProblemSection } from './components/ProblemSection'
 import { RiskComparison } from './components/RiskComparison'
 import { HowItWorks } from './components/HowItWorks'
 import { LearningLoop } from './components/LearningLoop'
+import { CaseStudyTeaser } from './components/CaseStudyTeaser'
 import { MgaModel } from './components/MgaModel'
 import { MarketFocus } from './components/MarketFocus'
 import { ClosingCTA } from './components/ClosingCTA'
@@ -21,6 +22,7 @@ export default function App() {
         <RiskComparison />
         <HowItWorks />
         <LearningLoop />
+        <CaseStudyTeaser />
         <MgaModel />
         <MarketFocus />
         <ClosingCTA />
