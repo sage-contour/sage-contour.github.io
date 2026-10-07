@@ -8,7 +8,7 @@ import { caseStudy } from '../data/content'
  */
 
 type Tier = 'low' | 'moderate' | 'elevated' | 'severe'
-type Home = { id: string; p: number; tier: Tier; t: number | null; d: string }
+type Home = { p: number; tier: Tier; t: number | null; d: string }
 type RiskData = {
   width: number
   height: number
@@ -77,7 +77,7 @@ export function RiskMap() {
   const [data, setData] = useState<RiskData | null>(null)
   const [showBurn, setShowBurn] = useState(true)
   const [showHomes, setShowHomes] = useState(true)
-  const [hover, setHover] = useState<{ home: Home; x: number; y: number } | null>(null)
+  const [hover, setHover] = useState<{ i: number; x: number; y: number } | null>(null)
   const frame = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -93,8 +93,10 @@ export function RiskMap() {
     const i = target.dataset.i
     const box = frame.current?.getBoundingClientRect()
     if (!data || i === undefined || !box) return setHover(null)
-    setHover({ home: data.homes[Number(i)], x: e.clientX - box.left, y: e.clientY - box.top })
+    setHover({ i: Number(i), x: e.clientX - box.left, y: e.clientY - box.top })
   }
+
+  const home = hover && data ? data.homes[hover.i] : null
 
   return (
     <div>
@@ -145,12 +147,12 @@ export function RiskMap() {
             <g onPointerMove={onMove} stroke="var(--color-ink)" strokeWidth="0.8" strokeLinejoin="round">
               {data.homes.map((h, i) => (
                 <path
-                  key={h.id}
+                  key={i}
                   d={h.d}
                   data-i={i}
                   fill={showHomes ? TIER_COLOR[h.tier] : 'var(--color-surface-strong)'}
-                  strokeOpacity={hover?.home.id === h.id ? 1 : 0.55}
-                  strokeWidth={hover?.home.id === h.id ? 2.4 : 0.8}
+                  strokeOpacity={hover?.i === i ? 1 : 0.55}
+                  strokeWidth={hover?.i === i ? 2.4 : 0.8}
                 />
               ))}
             </g>
@@ -161,7 +163,7 @@ export function RiskMap() {
           <div className="aspect-[1120/796] w-full animate-pulse bg-surface" aria-hidden="true" />
         )}
 
-        {hover && (
+        {hover && home && (
           <div
             className="pointer-events-none absolute z-10 w-56 rounded-xl border border-line bg-bg/95 p-3.5 text-sm shadow-lg backdrop-blur-sm"
             style={{
@@ -170,18 +172,18 @@ export function RiskMap() {
             }}
           >
             <p className="flex items-center gap-2 font-medium text-ink">
-              <span className="risk-swatch" style={{ background: TIER_COLOR[hover.home.tier] }} />
-              {copy.tiers[hover.home.tier].split(' · ')[0]} risk
+              <span className="risk-swatch" style={{ background: TIER_COLOR[home.tier] }} />
+              {copy.tiers[home.tier].split(' · ')[0]} risk
             </p>
-            {hover.home.p > 0 ? (
+            {home.p > 0 ? (
               <>
                 <p className="mt-2 text-muted">
-                  {copy.tooltip.ignites} <span className="font-serif text-lg text-ink tabular-nums">{pct(hover.home.p)}</span>{' '}
+                  {copy.tooltip.ignites} <span className="font-serif text-lg text-ink tabular-nums">{pct(home.p)}</span>{' '}
                   {copy.tooltip.of}
                 </p>
-                {hover.home.t !== null && (
+                {home.t !== null && (
                   <p className="mt-1 text-faint">
-                    {copy.tooltip.median} {Math.round(hover.home.t)} min {copy.tooltip.after}
+                    {copy.tooltip.median} {Math.round(home.t)} min {copy.tooltip.after}
                   </p>
                 )}
               </>
