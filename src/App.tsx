@@ -9,10 +9,12 @@ import { MgaModel } from './components/MgaModel'
 import { MarketFocus } from './components/MarketFocus'
 import { ClosingCTA } from './components/ClosingCTA'
 import { Footer } from './components/Footer'
+import { useHashScroll } from './hooks/useHashScroll'
 import { useReveal } from './hooks/useReveal'
 
 export default function App() {
   useReveal()
+  useHashScroll()
   return (
     <>
       <Header />
