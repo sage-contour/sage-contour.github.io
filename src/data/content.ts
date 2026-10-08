@@ -5,7 +5,7 @@
 
 export const CONTACT_EMAIL = 'hello@sageinsurance.ai'
 /** Inbox that receives contact-form submissions via formsubmit.co (no backend needed on GitHub Pages). */
-export const FORM_EMAIL = 'techydigit@gmail.com'
+export const FORM_EMAIL = 'b.goshayeshi@diphyx.com'
 export const FORM_ENDPOINT = `https://formsubmit.co/ajax/${FORM_EMAIL}`
 
 export const mailto = (subject: string) =>

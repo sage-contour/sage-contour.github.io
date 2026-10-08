@@ -4,7 +4,7 @@ Public marketing site for **Sage**: physics-informed AI for home insurance.
 
 > Sage is building physics-informed AI for home insurance. We model how individual homes respond to wildfire and other hazards, helping insurance partners identify risks traditional models may misprice.
 
-**Live site:** https://sage-contour.github.io/
+**Live site:** https://sagecontour.com/
 
 It's a static site (home page plus case-study pages) built with **Vite + React + TypeScript + Tailwind CSS**. GitHub Pages deploys it on every push to `main`.
 
