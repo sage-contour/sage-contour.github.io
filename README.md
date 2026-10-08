@@ -28,20 +28,26 @@ npm run preview   # serves dist/ locally
 
 ```text
 index.html         Home page entry
-case-studies/rancho-bernardo/index.html
-                   Case-study page entry (registered in vite.config.ts `pages`)
+case-studies/index.html
+                   Case-study list (/case-studies/)
+case-studies/<slug>/index.html
+                   One page per case study; #root carries data-slug (slugs listed in vite.config.ts)
 src/
   components/      Header, Hero, RiskComparison, RiskGrid (signature visual),
                    ProblemSection, HowItWorks, LearningLoop, CfdSimulation,
                    CaseStudyTeaser, MgaModel, MarketFocus, ClosingCTA,
                    ContactForm, Footer, Section, Topography, Wordmark
-  pages/           CaseStudyPage (Rancho Bernardo)
+  pages/           CaseStudyPage (any study), CaseStudiesPage (the list)
   data/content.ts  All site copy in one place (edit wording here)
+  data/case-studies.ts
+                   Case-study copy and figures, one entry per study
+  data/<slug>-risk.json
+                   Risk-map data per study (orchestrator/tools/risk/web_map.py)
   hooks/           useReveal, useMediaQuery
   lib/links.ts     Base-aware links, so nav anchors work from subpages
   styles/          Tailwind theme tokens, animations, reduced-motion rules
 public/            favicon.svg, og.png, PNG icons, robots.txt (and optional CNAME)
-public/media/      Case-study film and poster
+public/media/      Case-study films, posters and list cards
 scripts/           build-og.mjs: social image generator
 .github/workflows/ deploy.yml: GitHub Pages deployment
 ```
@@ -58,17 +64,24 @@ Check any wording change against those rules before you publish it.
 
 ### Case-study media
 
-`public/media/rancho-bernardo.mp4` and `rancho-bernardo-poster.jpg` come from the
-orchestrator's ivory-theme render (`orchestrator/tools/case-study/rancho-bernardo-10s-ivory.sh`),
-which uses this site's palette, fonts and wordmark. The MP4 is the 1920×1080 H.264 `web.mp4`
-from that render. The poster is the 4K `poster.jpg` scaled to 1920 px.
+Each study `<slug>` has `public/media/<slug>.mp4` (the 1920×1080 H.264 `web.mp4`),
+`<slug>-poster.jpg` (the 4K `poster.jpg` scaled to 1920 px, also its share image) and
+`<slug>-card.jpg` (the poster at 960 px, for the list page). They come from the orchestrator's
+ivory-theme render, which uses this site's palette, fonts and wordmark:
+`orchestrator/tools/case-study/run_case.py examples/<slug>.json --site <this checkout>` runs the
+whole case and writes `data/<slug>/videos/case-study-10s-ivory/`
+(`rancho-bernardo-10s-ivory.sh` for Rancho Bernardo).
 
-The risk map (`src/components/RiskMap.tsx`) draws `src/data/rancho-bernardo-risk.json`, written by
-`orchestrator/tools/risk/web_map.py` from the fire ensemble in `tools/risk/ensemble.py`. The JSON loads
-as its own chunk. `public/media/rancho-bernardo-risk-map.jpg` is a static capture of the map, used on the
-home-page teaser.
+The risk map (`src/components/RiskMap.tsx`) draws `src/data/<slug>-risk.json`, written by
+`orchestrator/tools/risk/web_map.py` from the fire ensemble in `tools/risk/ensemble.py`. Each JSON
+loads as its own chunk. `public/media/rancho-bernardo-risk-map.jpg` is a static capture of the map,
+used on the home-page teaser.
 
-To add another page, create `<path>/index.html`, register it in `pages` in `vite.config.ts`
+To add a case study: copy the media and risk JSON above, add an entry to `caseStudies` in
+`src/data/case-studies.ts`, create `case-studies/<slug>/index.html` with `data-slug="<slug>"` on
+`#root`, and add the slug to `caseStudies` in `vite.config.ts`.
+
+To add any other page, create `<path>/index.html`, register it in `pages` in `vite.config.ts`
 (and in `socialImages` if it has its own share image), then add a mount file in `src/`.
 
 ## Deployment (GitHub Pages)

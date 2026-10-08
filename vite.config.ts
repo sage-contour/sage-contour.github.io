@@ -16,14 +16,18 @@ import tailwindcss from '@tailwindcss/vite'
 const base = process.env.BASE_PATH ?? '/'
 const siteUrl = process.env.SITE_URL
 
+/** Case-study pages: case-studies/<slug>/index.html, each sharing media/<slug>-poster.jpg. */
+const caseStudies = ['rancho-bernardo', 'montclair', 'fountaingrove', 'topanga-canyon', 'suncrest', 'summit-park']
+
 /** Pages (relative to the base) and the social image each one uses; others use og.png. */
-const pages = {
+const pages: Record<string, string> = {
   '': 'index.html',
-  'case-studies/rancho-bernardo/': 'case-studies/rancho-bernardo/index.html',
+  'case-studies/': 'case-studies/index.html',
+  ...Object.fromEntries(caseStudies.map((s) => [`case-studies/${s}/`, `case-studies/${s}/index.html`])),
 }
-const socialImages: Record<string, string> = {
-  'case-studies/rancho-bernardo/': 'media/rancho-bernardo-poster.jpg',
-}
+const socialImages: Record<string, string> = Object.fromEntries(
+  caseStudies.map((s) => [`case-studies/${s}/`, `media/${s}-poster.jpg`]),
+)
 
 /**
  * Injects absolute social/canonical URLs when SITE_URL is known. Social crawlers
@@ -62,7 +66,7 @@ export default defineConfig({
     cssMinify: true,
     rollupOptions: {
       input: Object.fromEntries(
-        Object.entries(pages).map(([page, file]) => [page.split('/').at(-2) ?? 'home', fileURLToPath(new URL(file, import.meta.url))]),
+        Object.entries(pages).map(([page, file]) => [page.split('/').at(-2) || 'home', fileURLToPath(new URL(file, import.meta.url))]),
       ),
     },
   },

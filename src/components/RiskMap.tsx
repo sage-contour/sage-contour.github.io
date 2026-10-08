@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { caseStudy } from '../data/content'
+import { caseStudyCopy, type CaseStudy } from '../data/case-studies'
 
 /**
  * Home-by-home wildfire risk map for a case study, drawn from the JSON written by
  * orchestrator/tools/risk/web_map.py. Coordinates are metres from the grid's top-left,
- * so the SVG viewBox is the site itself. The data is loaded lazily as its own chunk.
+ * so the SVG viewBox is the site itself. Each study's data (src/data/<slug>-risk.json) is
+ * loaded lazily as its own chunk.
  */
 
 type Tier = 'low' | 'moderate' | 'elevated' | 'severe'
@@ -21,7 +22,8 @@ type RiskData = {
   tiers: Record<Tier, number>
 }
 
-const copy = caseStudy.riskMap
+const copy = caseStudyCopy.riskMap
+const riskData = import.meta.glob<{ default: RiskData }>('../data/*-risk.json')
 const TIERS: Tier[] = ['low', 'moderate', 'elevated', 'severe']
 const TIER_COLOR: Record<Tier, string> = {
   low: 'var(--color-risk-low)',
@@ -73,7 +75,7 @@ function Toggle({ on, onChange, children }: { on: boolean; onChange: (v: boolean
   )
 }
 
-export function RiskMap() {
+export function RiskMap({ study }: { study: CaseStudy }) {
   const [data, setData] = useState<RiskData | null>(null)
   const [showBurn, setShowBurn] = useState(true)
   const [showHomes, setShowHomes] = useState(true)
@@ -82,11 +84,11 @@ export function RiskMap() {
 
   useEffect(() => {
     let live = true
-    import('../data/rancho-bernardo-risk.json').then((m) => live && setData(m.default as RiskData))
+    riskData[`../data/${study.slug}-risk.json`]?.().then((m) => live && setData(m.default))
     return () => {
       live = false
     }
-  }, [])
+  }, [study.slug])
 
   const onMove = (e: React.PointerEvent<SVGGElement>) => {
     const target = e.target as SVGElement
@@ -115,7 +117,7 @@ export function RiskMap() {
             viewBox={`0 0 ${data.width} ${data.height}`}
             className="block h-auto w-full"
             role="img"
-            aria-label={copy.label}
+            aria-label={study.riskMap.label}
             onPointerLeave={() => setHover(null)}
           >
             <rect width={data.width} height={data.height} fill="var(--color-bg)" />
@@ -160,7 +162,7 @@ export function RiskMap() {
             <NorthArrow x={data.width - 44} y={44} />
           </svg>
         ) : (
-          <div className="aspect-[1120/796] w-full animate-pulse bg-surface" aria-hidden="true" />
+          <div className="w-full animate-pulse bg-surface" style={{ aspectRatio: study.riskMap.size.join(' / ') }} aria-hidden="true" />
         )}
 
         {hover && home && (

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { CASE_STUDY_PATH, caseStudy, mailto, site } from '../data/content'
+import { mailto, site } from '../data/content'
+import { CASE_STUDIES_PATH, caseStudyCopy as shared, type CaseStudy } from '../data/case-studies'
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { Section, SectionHeading, Split } from '../components/Section'
@@ -9,9 +10,7 @@ import { useMediaQuery } from '../hooks/useMediaQuery'
 import { useReveal } from '../hooks/useReveal'
 import { BASE } from '../lib/links'
 
-const cs = caseStudy
-
-function Film() {
+function Film({ cs }: { cs: CaseStudy }) {
   // The film loops silently; with reduced motion it waits for the viewer to press play.
   // A separate button replaces native controls, which would cover the film's legend.
   const reduced = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -35,7 +34,7 @@ function Film() {
         <video
           ref={ref}
           className="block aspect-video h-auto w-full"
-          poster={`${BASE}media/rancho-bernardo-poster.jpg`}
+          poster={`${BASE}media/${cs.slug}-poster.jpg`}
           muted
           loop
           playsInline
@@ -45,7 +44,7 @@ function Film() {
           onPause={() => setPlaying(false)}
           onClick={toggle}
         >
-          <source src={`${BASE}media/rancho-bernardo.mp4`} type="video/mp4" />
+          <source src={`${BASE}media/${cs.slug}.mp4`} type="video/mp4" />
         </video>
       </div>
       <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -61,21 +60,21 @@ function Film() {
   )
 }
 
-export function CaseStudyPage() {
+export function CaseStudyPage({ cs }: { cs: CaseStudy }) {
   useReveal()
   return (
     <>
-      <Header current={CASE_STUDY_PATH} />
+      <Header current={CASE_STUDIES_PATH} />
       <main id="main">
         <section id="top" className="relative overflow-hidden">
           <Topography className="opacity-70" />
           <div className="container-x relative pb-14 pt-14 sm:pb-20 sm:pt-20">
             <div className="reveal max-w-4xl">
-              <a href={BASE} className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink">
+              <a href={`${BASE}${CASE_STUDIES_PATH}`} className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M19 12H5M11 6l-6 6 6 6" />
                 </svg>
-                {cs.back}
+                {shared.back}
               </a>
               <p className="eyebrow mb-5 mt-10">{cs.eyebrow}</p>
               <h1 className="text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">{cs.heading}</h1>
@@ -83,7 +82,7 @@ export function CaseStudyPage() {
             </div>
           </div>
           <div className="container-x relative pb-16 sm:pb-24">
-            <Film />
+            <Film cs={cs} />
             <dl className="reveal reveal-delay-2 mt-14 grid grid-cols-2 border-t border-line lg:grid-cols-4">
               {cs.stats.map((s, i) => (
                 <div
@@ -101,11 +100,11 @@ export function CaseStudyPage() {
 
         <Section id="risk-map" tone="surface">
           <Split
-            left={<SectionHeading eyebrow={cs.riskMap.eyebrow} title={cs.riskMap.heading} />}
+            left={<SectionHeading eyebrow={shared.riskMap.eyebrow} title={shared.riskMap.heading} />}
             right={<p className="reveal text-base leading-relaxed text-muted sm:text-lg lg:pt-12">{cs.riskMap.copy}</p>}
           />
           <div className="mt-12">
-            <RiskMap />
+            <RiskMap study={cs} />
           </div>
           <dl className="reveal mt-14 grid border-t border-line md:grid-cols-3">
             {cs.riskMap.highlights.map((h) => (
@@ -122,12 +121,12 @@ export function CaseStudyPage() {
           <Split
             left={
               <div className="lg:sticky lg:top-28">
-                <SectionHeading eyebrow={cs.steps.eyebrow} title={cs.steps.heading} />
+                <SectionHeading eyebrow={shared.steps.eyebrow} title={shared.steps.heading} />
               </div>
             }
             right={
               <ol className="reveal reveal-delay-1 border-t border-line">
-                {cs.steps.items.map((step, i) => (
+                {cs.steps.map((step, i) => (
                   <li key={step.title} className="grid grid-cols-[3.5rem_1fr] items-baseline gap-4 border-b border-line py-6 sm:grid-cols-[4.5rem_1fr]">
                     <p className="num">0{i + 1}</p>
                     <div>
@@ -145,9 +144,9 @@ export function CaseStudyPage() {
         </Section>
 
         <Section id="findings" tone="surface">
-          <SectionHeading eyebrow={cs.findings.eyebrow} title={cs.findings.heading} />
+          <SectionHeading eyebrow={shared.findings.eyebrow} title={shared.findings.heading} />
           <div className="reveal mt-14 grid border-t border-line md:grid-cols-3">
-            {cs.findings.items.map((f, i) => (
+            {cs.findings.map((f, i) => (
               <article key={f.title} className="border-b border-line py-8 md:border-b-0 md:border-r md:pr-8 md:last:border-r-0 md:[&:not(:first-child)]:pl-8">
                 <p className="num">0{i + 1}</p>
                 <h3 className="mt-6 text-2xl leading-tight">{f.title}</h3>
@@ -159,10 +158,10 @@ export function CaseStudyPage() {
 
         <Section id="limits">
           <Split
-            left={<SectionHeading eyebrow={cs.limits.eyebrow} title={cs.limits.heading} />}
+            left={<SectionHeading eyebrow={shared.limits.eyebrow} title={shared.limits.heading} />}
             right={
               <ul className="reveal reveal-delay-1 border-t border-line">
-                {cs.limits.items.map((item) => (
+                {cs.limits.map((item) => (
                   <li key={item} className="flex gap-4 border-b border-line py-5 text-base leading-relaxed text-ink-soft">
                     <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
                     {item}
@@ -177,14 +176,14 @@ export function CaseStudyPage() {
           <Topography className="opacity-60 invert" />
           <div className="container-x relative py-20 sm:py-28">
             <div className="reveal max-w-3xl">
-              <h2 className="text-4xl leading-[1.05] sm:text-5xl">{cs.next.heading}</h2>
-              <p className="mt-7 max-w-2xl text-lg leading-relaxed text-bg/75">{cs.next.copy}</p>
+              <h2 className="text-4xl leading-[1.05] sm:text-5xl">{shared.next.heading}</h2>
+              <p className="mt-7 max-w-2xl text-lg leading-relaxed text-bg/75">{shared.next.copy}</p>
               <div className="mt-10 flex flex-wrap gap-3">
                 <a href={`${BASE}#contact`} className="btn-primary bg-bg text-ink hover:bg-accent-soft">
                   {site.primaryCta}
                 </a>
-                <a href={mailto('Rancho Bernardo case study')} className="btn-secondary border-bg/30 text-bg hover:border-bg hover:bg-bg/10">
-                  Email us about this study
+                <a href={mailto(`${cs.name} case study`)} className="btn-secondary border-bg/30 text-bg hover:border-bg hover:bg-bg/10">
+                  {shared.email}
                 </a>
               </div>
             </div>

@@ -1,11 +1,11 @@
-import { CASE_STUDY_PATH, caseStudy } from '../data/content'
+import { caseStudyTeaser as teaser } from '../data/content'
+import { CASE_STUDIES_PATH, caseStudyPath } from '../data/case-studies'
 import { BASE } from '../lib/links'
 import { Section, SectionHeading, Split } from './Section'
 
-const { teaser } = caseStudy
-
 export function CaseStudyTeaser() {
-  const href = `${BASE}${CASE_STUDY_PATH}`
+  const href = `${BASE}${CASE_STUDIES_PATH}`
+  const featured = `${BASE}${caseStudyPath('rancho-bernardo')}`
   return (
     <Section id="case-study">
       <Split
@@ -21,7 +21,7 @@ export function CaseStudyTeaser() {
           </div>
         }
         right={
-          <a href={href} className="reveal reveal-delay-1 group block overflow-hidden rounded-2xl border border-line bg-bg" tabIndex={-1} aria-hidden="true">
+          <a href={featured} className="reveal reveal-delay-1 group block overflow-hidden rounded-2xl border border-line bg-bg" tabIndex={-1} aria-hidden="true">
             <img
               src={`${BASE}media/rancho-bernardo-risk-map.jpg`}
               alt=""

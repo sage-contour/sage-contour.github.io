@@ -1,7 +1,9 @@
 /**
  * All site copy lives here so wording (especially insurance positioning)
- * can be reviewed and edited in one place.
+ * can be reviewed and edited in one place. Case-study pages: case-studies.ts.
  */
+
+import { CASE_STUDIES_PATH } from './case-studies'
 
 export const CONTACT_EMAIL = 'hello@sageinsurance.ai'
 /** Inbox that receives contact-form submissions via formsubmit.co (no backend needed on GitHub Pages). */
@@ -22,13 +24,10 @@ export const site = {
   secondaryCtaHref: '#how-it-works',
 }
 
-/** Page paths are relative to the site base (see vite.config.ts). */
-export const CASE_STUDY_PATH = 'case-studies/rancho-bernardo/'
-
 export const nav = [
   { label: 'Why Sage', href: '#why-sage' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Case Study', href: CASE_STUDY_PATH },
+  { label: 'Case Studies', href: CASE_STUDIES_PATH },
   { label: 'Model', href: '#model' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -191,133 +190,12 @@ export const closing = {
   },
 }
 
-/**
- * Rancho Bernardo case study. Figures come from the orchestrator run manifest
- * (orchestrator/data/rancho-bernardo, docs/rancho-bernardo-example.md). Keep the
- * limitations intact: the CFD solve did not converge and the fire run is a separate,
- * illustrative scenario, so nothing here is a validated property risk score.
- */
-export const caseStudy = {
-  teaser: {
-    eyebrow: 'Case study',
-    heading: 'One neighborhood, mapped home by home',
-    copy: 'We ran the Sage platform on The Trails in Rancho Bernardo, San Diego: from raw property and terrain data to 3D geometry, a CFD wind field, and a home-by-home risk map built from 816 fire simulations.',
-    cta: 'Read the case study',
-  },
-  meta: {
-    title: 'Rancho Bernardo case study | Sage',
-    description:
-      'How Sage mapped wildfire risk home by home across The Trails in Rancho Bernardo, San Diego: a high-resolution digital twin, a CFD wind field, and 816 fire simulations.',
-  },
-  eyebrow: 'Case study · San Diego County, California',
-  heading: 'Rancho Bernardo: mapping wildfire risk home by home',
-  intro:
-    'The Trails sits where homes meet open chaparral. We built a high-resolution digital twin of roughly a square kilometre of it, down to every building and tree, solved the wind field with CFD, and ran 816 fire simulations to map the risk to each home.',
-  video: {
-    label:
-      'Ten-second film of The Trails, Rancho Bernardo. Wind ribbons coloured by CFD speed flow from east-northeast to west-southwest across 3D buildings and trees, then an illustrative fire spreads from the northeast edge and ignites buildings in its path.',
-    caption:
-      'CFD wind sampled 10 m above terrain, coloured by speed. The fire is a separate illustrative scenario, shown for its first 30 simulated minutes.',
-  },
-  stats: [
-    { value: '221', label: 'Buildings modeled', note: 'Measured heights from lidar' },
-    { value: '2,871', label: 'Trees resolved', note: 'Height and crown from lidar' },
-    { value: '844k', label: 'CFD mesh cells', note: 'Refined around buildings and canopy' },
-    { value: '10.3 m/s', label: 'Mean local wind', note: 'Peak 20.3 m/s, from ENE' },
-  ],
-  riskMap: {
-    eyebrow: 'The risk map',
-    heading: 'Same neighborhood. Different homes. Different risk.',
-    copy: 'One fire run shows one possible outcome, so we ran 816. They cover every dry, windy day in five years of local weather, with fire arriving from each of eight directions. Shading shows how often the fire reached each spot. Each home is coloured by how often it ignited.',
-    label:
-      'Risk map of The Trails, Rancho Bernardo. Burn probability is highest in the open chaparral on the east and north and falls off into the streets to the west. Of 221 homes, 35 are severe, 52 elevated, 72 moderate and 62 lower risk.',
-    layers: { burn: 'Burn probability', homes: 'Home risk' },
-    burnLegend: { title: 'Burn probability', note: 'Share of simulated fires that reach each 4 m cell' },
-    homeLegend: { title: 'Home risk tier', note: 'Share of simulated fires in which the home ignites' },
-    tiers: {
-      low: 'Lower · under 10%',
-      moderate: 'Moderate · 10–20%',
-      elevated: 'Elevated · 20–30%',
-      severe: 'Severe · 30% or more',
-    },
-    tooltip: {
-      ignites: 'Ignites in',
-      of: 'of simulated fires',
-      median: 'Typically ignites',
-      after: 'into the fire',
-      never: 'Did not ignite in any run',
-    },
-    highlights: [
-      { value: '47%', label: 'of homes fall in a different tier from their nearest neighbour, typically about 34 m away' },
-      { value: '0.1–47%', label: 'range of ignition frequency across 221 homes in one neighborhood' },
-      { value: '816', label: 'fire simulations: 51 fire-weather days × 8 directions × 2 random seeds' },
-    ],
-    note: 'Assumes a fire reaches the neighborhood under local fire weather, with every direction and weather day weighted equally. The results are uncalibrated and rank homes within this neighborhood only. They are not annual probabilities or prices.',
-  },
-  steps: {
-    eyebrow: 'What we ran',
-    heading: 'From raw data to a simulated neighborhood',
-    items: [
-      {
-        title: 'Property and terrain data',
-        body: 'Building footprints, 4.5 million aerial lidar points, high-resolution imagery and fuel and vegetation layers, fused into one model of a 1.1 × 0.8 km area.',
-      },
-      {
-        title: '3D geometry',
-        body: 'Lidar gives each building its measured height and each tree its height and crown. Terrain comes from the same survey.',
-      },
-      {
-        title: 'Weather scenario',
-        body: 'From five years of local hourly weather we chose the strongest dry, warm offshore hour: 10.4 m/s from the east-northeast, gusting to 17.7 m/s.',
-      },
-      {
-        title: 'CFD wind field',
-        body: 'Our CFD engine resolves the flow over the terrain, around 211 buildings, and through tree crowns modeled as porous zones.',
-      },
-      {
-        title: 'Illustrative fire scenario',
-        body: 'A separate surface-fire model ignites at the northeast edge under the same weather and runs for 30 minutes. This is the run shown in the film.',
-      },
-      {
-        title: 'Risk ensemble',
-        body: 'The same fire model, run 816 times for one simulated hour each across local fire weather and ignition directions, gives every cell a burn probability and every home an ignition frequency.',
-      },
-    ],
-  },
-  findings: {
-    eyebrow: 'What it shows',
-    heading: 'Same wind, different exposure',
-    items: [
-      {
-        title: 'Wind is not uniform',
-        body: 'Within one neighborhood, local wind at 10 m ranges from near calm in sheltered pockets to over 20 m/s in the most exposed spots. About a fifth of sampled points see less than half the reference wind speed.',
-      },
-      {
-        title: 'Terrain and structures steer it',
-        body: 'Terrain, buildings and tree canopy speed the flow up in some places and shelter it in others. A single regional wind value cannot show this.',
-      },
-      {
-        title: 'Exposure follows the flow',
-        body: 'In the scenario, 50 of 221 buildings ignite within 30 minutes. Fire enters from the wildland edge and runs downwind into the streets, and neighboring homes end up with different outcomes.',
-      },
-    ],
-  },
-  limits: {
-    eyebrow: 'Read this as a demonstration',
-    heading: 'What this case study does not show',
-    items: [
-      'The CFD solve ran 1,000 iterations but did not meet its convergence thresholds. Treat the wind field as preliminary.',
-      'The fire runs, including the risk ensemble, use a separate surface-fire model with uniform hourly wind. They are not driven by the CFD wind field.',
-      'The risk map weights every ignition direction and fire-weather day equally and leaves out how likely ignition is and any firefighting response. It ranks homes against each other; it is not calibrated against observed losses.',
-      'The source data were captured in different years, so the model is not a survey of current conditions.',
-      'Building materials and vulnerability use default assumptions because no inspection records exist for this area. A home that rarely ignites in the simulations is not safe.',
-    ],
-  },
-  next: {
-    heading: 'Where this goes next',
-    copy: 'Converged, validated CFD fields coupled to ember and fire physics, run across many weather scenarios per home. That is the training data behind Sage’s fast property risk model.',
-  },
-  back: 'Back to Sage',
+/** Home-page teaser for the case studies (their pages and copy live in case-studies.ts). */
+export const caseStudyTeaser = {
+  eyebrow: 'Case studies',
+  heading: 'One neighborhood at a time, mapped home by home',
+  copy: 'We ran the Sage platform on wildland-urban neighborhoods across California and Utah: from raw property and terrain data to 3D geometry, a CFD wind field, and a home-by-home risk map built from hundreds of fire simulations.',
+  cta: 'See the case studies',
 }
 
 export const footer = {
