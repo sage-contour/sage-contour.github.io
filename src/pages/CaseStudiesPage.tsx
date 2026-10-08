@@ -33,8 +33,8 @@ export function CaseStudiesPage() {
                       <img
                         src={`${BASE}media/${cs.slug}-card.jpg`}
                         alt=""
-                        width={960}
-                        height={540}
+                        width={1280}
+                        height={720}
                         loading={i < 2 ? 'eager' : 'lazy'}
                         decoding="async"
                         className="block aspect-video h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none"

@@ -66,7 +66,8 @@ Check any wording change against those rules before you publish it.
 
 Each study `<slug>` has `public/media/<slug>.mp4` (the 1920×1080 H.264 `web.mp4`),
 `<slug>-poster.jpg` (the 4K `poster.jpg` scaled to 1920 px, also its share image) and
-`<slug>-card.jpg` (the poster at 960 px, for the list page). They come from the orchestrator's
+`<slug>-card.jpg` (1280×720, for the list page: the same film frame without the overlay text,
+trimmed to the 3D model by `orchestrator/tools/case-study/website_card.mjs` and `website_card_crop.py`). They come from the orchestrator's
 ivory-theme render, which uses this site's palette, fonts and wordmark:
 `orchestrator/tools/case-study/run_case.py examples/<slug>.json --site <this checkout>` runs the
 whole case and writes `data/<slug>/videos/case-study-10s-ivory/`
